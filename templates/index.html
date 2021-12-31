@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+	{% load static %}
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Required meta tags -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Dashboard</title>
+	<link rel="icon"       href="{% static '/ptit.png' %}">
+	<link rel="stylesheet" href="{% static '/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static '/themify-icons/themify-icons.css' %}">
+	<link rel="stylesheet" href="{% static '/nice-select.css' %}">
+	<link rel="stylesheet" href="{% static '/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static '/gijgo.min.css' %}">
+	<link rel="stylesheet" href="{% static '/all.min.css' %}">
+	<link rel="stylesheet" href="{% static '/tagsinput.css' %}">
+	<link rel="stylesheet" href="{% static '/jquery.dataTables.min.css' %}">
+	<link rel="stylesheet" href="{% static '/responsive.dataTables.min.css' %}">
+	<link rel="stylesheet" href="{% static '/buttons.dataTables.min.css' %}">
+	<link rel="stylesheet" href="{% static '/morris.css' %}">
+	<link rel="stylesheet" href="{% static '/material-icons.css' %}">
+	<link rel="stylesheet" href="{% static '/metisMenu.css' %}">
+	<link rel="stylesheet" href="{% static '/style.css' %}">
+	<link rel="stylesheet" href="{% static '/default.css' %}" id="colorSkinCSS">
+	<link rel="stylesheet" href="{% static '/css.css' %}" rel="stylesheet">
+    </head>
+    <body class="crm_body_bg">
+        <nav class="sidebar vertical-scroll ps-container ps-theme-default ps-active-y" data-ps-id="570acd51-2b32-669e-f97c-09e2134a35bf">
+            <div class="logo d-flex justify-content-between">
+                <a href="#">
+                    <img src="{% static '/ptit.png' %}" alt="">
+                </a>
+                <div class="sidebar_close_icon d-lg-none">
+                    <i class="ti-close"></i>
+                </div>
+            </div>
+            <ul id="sidebar_menu" class="metismenu">
+                <li class="mm-active">
+                    <a class="has-arrow" href="#" aria-expanded="true">
+                        <div class="icon_menu">
+		            <img src="{% static '/dashboard.svg' %}" alt="">
+                        </div>
+                        <span>Dashboard</span>
+                    </a>
+                    <ul class="mm-collapse mm-show">
+                        <li>
+                            <a href="#" class="active">List Monitor</a>
+                        </li>
+                        <li>
+                            <a href="#">Info</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;">
+                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+            </div>
+            <div class="ps-scrollbar-y-rail" style="top: 0px; height: 876px; right: 3px;">
+                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 246px;"></div>
+            </div>
+        </nav>
+        <!-- sidebar part end -->
+        <!--/ sidebar  -->
+        <section class="main_content dashboard_part large_header_bg">
+            <!-- menu  -->
+            <div class="container-fluid no-gutters">
+                <div class="row">
+                    <div class="col-lg-12 p-0 ">
+                        <div class="header_iner d-flex justify-content-between align-items-center">
+                            <div class="sidebar_icon d-lg-none">
+                                <i class="ti-menu">
+				</i>
+                            </div>
+                            <div class="serach_field-area d-flex align-items-center">
+                            </div>
+                            <div class="header_right d-flex justify-content-between align-items-center">
+                                <div class="profile_info">
+				    <img src="{% static '/nerd-icon-png-24.jpg' %}" alt="#">
+                                    <div class="profile_info_iner">
+                                        <div class="profile_author_name">
+                                            <h5>Mask Detector</h5>
+                                        </div>
+                                        <div class="profile_info_details" style="background-color: blue">
+                                            <h6>⮞ Thanh Danh</h6>
+                                            <h6>⮞ Trung Nguyên</h6>
+                                        </div>
+                                        <!--
+					-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ menu  -->
+            <div class="main_content_iner ">
+                <div class="container-fluid p-0 sm_padding_15px">
+                    <div class="row justify-content-center">
+            {% for camera_index in list_cameras %}
+                        <div class="col-lg-4"
+        	     style="cursor: pointer;"
+			     onclick="newwindow=window.open('/monitor/{{camera_index}}','name','height=700,width=700');" >
+                            <div class="white_card card_height_100 mb_30">
+                                <div class="white_card_header">
+                                    <div class="box_header m-0 d-flex justify-content-center">
+                                        <div class="main-title box_header m-0">
+					    <h4 class="m-0">Camera {{camera_index}}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="white_card_body d-flex justify-content-center">
+                                    <img class="img_bolder" src="https://cdn4.vectorstock.com/i/thumb-large/94/93/photo-camera-icon-vector-4619493.jpg" />
+                                </div>
+                            </div>
+                        </div>
+			{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+	<script src="{% static '/jquery-3.4.1.min.js' %}"></script>
+	<script src="{% static '/popper.min.js' %}"></script>
+	<script src="{% static '/bootstrap.min.js' %}"></script>
+	<script src="{% static '/metisMenu.js' %}"></script>
+	<script src="{% static '/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static '/Chart.min.js' %}"></script>
+	<script src="{% static '/jquery.counterup.min.js' %}"></script>
+	<script src="{% static '/jquery.nice-select.min.js' %}"></script>
+	<script src="{% static '/owl.carousel.min.js' %}"></script>
+	<script src="{% static '/jquery.dataTables.min.js' %}"></script>
+	<script src="{% static '/dataTables.responsive.min.js' %}"></script>
+	<script src="{% static '/dataTables.buttons.min.js' %}"></script>
+	<script src="{% static '/buttons.flash.min.js' %}"></script>
+	<script src="{% static '/jszip.min.js' %}"></script>
+	<script src="{% static '/vfs_fonts.js' %}"></script>
+	<script src="{% static '/buttons.html5.min.js' %}"></script>
+	<script src="{% static '/buttons.print.min.js' %}"></script>
+	<script src="{% static '/Chart.min.js' %}"></script>
+	<script src="{% static '/jquery.barfiller.js' %}"></script>
+	<script src="{% static '/tagsinput.js' %}"></script>
+	<script src="{% static '/perfect-scrollbar.min.js' %}"></script>
+	<script src="{% static '/scrollable-custom.js' %}"></script>
+	<script src="{% static '/core.js' %}"></script>
+	<script src="{% static '/animated.js' %}"></script>
+	<script src="{% static '/custom.js' %}"></script>
+        <div class="liner-scroll-points-container"></div>
+    </body>
+</html>

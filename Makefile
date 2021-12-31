@@ -4,8 +4,7 @@ venv:
 	#########################################
 	# init virtual environment
 	#########################################
-	python -m venv venv
-	source ./venv/bin/activate
+	python -m venv venv && source ./venv/bin/activate
 
 install:
 	#########################################
@@ -17,4 +16,5 @@ run:
 	#########################################
 	# start staging server
 	#########################################
+	# python manage.py migrate
 	python ./manage.py runserver 0.0.0.0:3000

@@ -2,8 +2,6 @@ import cv2
 import torch
 import warnings
 
-warnings.filterwarnings("ignore")
-
 def list_cam():
     position = 0
     while True:
@@ -16,5 +14,6 @@ def list_cam():
         position += 1
 
 
-CAMERAS = list(list_cam())
+LIST_CAMERAS = list(list_cam())
+warnings.filterwarnings("ignore")
 MASK_MODEL = torch.hub.load('ultralytics/yolov5', 'custom', path='./mask_yolov5m.pt', force_reload=True)
