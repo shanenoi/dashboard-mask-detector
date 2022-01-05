@@ -1,4 +1,7 @@
+from tensorflow.keras.models import load_model
+
 import cv2
+import os
 import torch
 import warnings
 
@@ -15,5 +18,5 @@ def list_cam():
 
 
 LIST_CAMERAS = list(list_cam())
-warnings.filterwarnings("ignore")
-MASK_MODEL = torch.hub.load('ultralytics/yolov5', 'custom', path='./mask_yolov5m.pt', force_reload=True)
+FACE_NET = cv2.dnn.readNet(os.path.join("models", "deploy.prototxt"), os.path.join("models", "res10_300x300_ssd_iter_140000.caffemodel"))
+MASK_NET = load_model(os.path.join("models", "mask_detector.model"))
