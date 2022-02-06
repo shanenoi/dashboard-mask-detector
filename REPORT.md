@@ -70,3 +70,33 @@ mask_weared_incorrect         88         12      0.818      0.749      0.726    
 > *Release [v0.0.1](https://github.com/shanenoi/dashboard-mask-detector/releases/tag/v0.0.1)*
 
 ***Kết Quả: sau các loại tối ưu siêu tham số, mô hình có độ chính xác cao nhưng không thích hợp cho vấn đề realtime vì weight của model khá nặng, thực hiện nhiều phép tính nên có độ delay khá cao trên một frame(đâu đó tầm 2-3s) nên không phù hợp cho trường hợp này.***
+
+## 2. Kết Hợp Mạng *Phân Loại Thông Thường* Với *Mạng MobileNetV2*
+### * Phân Tích Vấn Đề Và Đưa Ra Giải Pháp
+> Đối với trường hợp delay ở giải pháp trên thì ta rút ra được là trong quá trình chọn model, có một vài tham số chọn không được tối ưu và thực hiện quá nhiều phép tính cho các công đoạn tạo phân tách khuôn mặt và phân loại khuôn mặt trong một pipline, chúng em nghĩ đến việc tối ưu bằng các tích hợp mạng phân vùng khuôn mặt với mạng phân loại phân loại riêng.
+> Các tiêu chuẩn để chọn mạng có sẵn
+> - Có kích thước nhỏ
+> - trained trên một tập dữ liệu lớn
+> - phù hợp cho các thiết bị có cấu hình yếu
+> **Sau quá trình xem xét chúng em quyết định tích hợp mạng trained MobileNetV2 vì mạng thường được dùng cho các thiết bị điện thoại và file weight chúng em sử dụng chỉ có 11MB!**
+*Kỹ thuật integrate với mạng đã được train như thế này chúng em gọi là **Pre-Trained Model***.
+### * MobileNetV2 Là Gì, Nó Có Ăn Được Không?
+> Theo tra cứu thì mạng MobileNetV2 được phát triển bởi đội ngũ Goole nhằm giảm kích thước của mô hình và giảm độ phức tạp các phép tính toán, được sử dụng nhiều cho các thiết bị như thiết bị di động, thiết bị nhúng.
+### * Triển Khai Trainning
+> - Dataset: cũng sử dụng bộ data ở trên
+> - Model: 
+>   -  # TODO: get more details
+> - Classes(loại bỏ đi class đeo khẩu trang không đúng cách vì với một context khác thì việc đeo sai khá nhiều trường hợp):
+>   - without_mask 
+>   - with_mask 
+> - Hyper-Parameter:
+>   - Batch: 16
+>   - Epochs: 100
+>
+> ======================
+>
+> *Thông tin YOLO Model*
+```
+```
+> *Release [v0.1.0](https://github.com/shanenoi/dashboard-mask-detector/releases/tag/v0.1.0)*
+***Kết Quả: 
