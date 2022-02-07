@@ -80,23 +80,68 @@ mask_weared_incorrect         88         12      0.818      0.749      0.726    
 > - phù hợp cho các thiết bị có cấu hình yếu
 > **Sau quá trình xem xét chúng em quyết định tích hợp mạng trained MobileNetV2 vì mạng thường được dùng cho các thiết bị điện thoại và file weight chúng em sử dụng chỉ có 11MB!**
 *Kỹ thuật integrate với mạng đã được train như thế này chúng em gọi là **Pre-Trained Model***.
+### * Pre-Trained Model Là Gì, Nó Có Ăn Được Không?
+> - Trong quá trình thực chiến ta có thể đưa ra một nhận định như thế này: classification model thường sẽ có 3 phần: phần input(đầu vào tiếp nhận data), phần body(kiến trúc của model đó), phần cuối (làm phẳng thành ma trận 1 chiều, và có thể có một số Dense layer, và một layer chuẩn hóa đầu ra).
+
+> - lấy model A và model B & giả sử:
+>   - Model A được train với tập dữ liệu lớn cho ra file weight và sau nhiều lần kiểm tra thì có độ chính xác cao.
+>   - Model B cũng có một vài tác vụ như model A nhưng mở rộng hơn
+>   - Ta chỉnh sửa model A bằng cách loại bỏ phần cuối của model A và tính hợp với model B (bằng cách hiệu chỉnh ma trận đầu vào của model B sao cho khớp với phần ra của model A). Giải thích bằng lý thuyết, đối với một model đã được train thì ứng đối với mỗi layer của model đó đều có tra trận trọng số nhất định, khi ta loại bỏ một phần nào đó thì có nghĩa là ta loại bỏ layer và ma trận trọng số đó, trong quá trình trainning thì chúng ta "đóng băng" trọng số của các layer model đã được train trước đó và tiếp tục train cho các layer được tích hợp phía sau.
+>   - Ý nghĩa của việc tích hợp 2 model như thế này:
+>      - Tiết kiếm được thời gian train, vì model B sẽ ít phức tạp hơn, do một số tác vụ đã được thực hiện ở model A.
+>      - có thể tái sử dụng lại nhanh nếu ta muốn thực hiện những các vụ phức tạp hơn khi cần phải tách các model theo từng tính năng riêng.
 ### * MobileNetV2 Là Gì, Nó Có Ăn Được Không?
 > Theo tra cứu thì mạng MobileNetV2 được phát triển bởi đội ngũ Goole nhằm giảm kích thước của mô hình và giảm độ phức tạp các phép tính toán, được sử dụng nhiều cho các thiết bị như thiết bị di động, thiết bị nhúng.
 ### * Triển Khai Trainning
 > - Dataset: cũng sử dụng bộ data ở trên
 > - Model: 
->   -  # TODO: get more details
+>   -  Ouput của MobileNetV2
+>   - AveragePooling2D(pool_size=(7, 7))
+>   - Flatten
+>   - Dense(128, activation="relu")
+>   - Dropout(0.5)
+>   - Dense(2, activation="softmax")
 > - Classes(loại bỏ đi class đeo khẩu trang không đúng cách vì với một context khác thì việc đeo sai khá nhiều trường hợp):
 >   - without_mask 
 >   - with_mask 
 > - Hyper-Parameter:
->   - Batch: 16
->   - Epochs: 100
+>   - Batch: 32
+>   - Epochs: 20
 >
 > ======================
 >
 > *Thông tin YOLO Model*
 ```
+...
+ out_relu (ReLU)                (None, 7, 7, 1280)   0           ['Conv_1_bn[0][0]']
+từ phần này trở lên là kiến trúc của MobileNetV2
+==================================================================================================
+ average_pooling2d (AveragePool  (None, 1, 1, 1280)  0           ['out_relu[0][0]']
+ ing2D)
+
+ flatten (Flatten)              (None, 1280)         0           ['average_pooling2d[0][0]']
+
+ dense (Dense)                  (None, 128)          163968      ['flatten[0][0]']
+
+ dropout (Dropout)              (None, 128)          0           ['dense[0][0]']
+
+ dense_1 (Dense)                (None, 2)            258         ['dropout[0][0]']
+==================================================================================================
+Total params: 2,422,210
+Trainable params: 2,388,098
+Non-trainable params: 34,112
+__________________________________________________________________________________________________
+```
+> *Sau khi train*
+```
+              precision    recall  f1-score   support
+
+   with_mask       0.97      1.00      0.99       433
+without_mask       1.00      0.97      0.98       386
+
+    accuracy                           0.98       819
+   macro avg       0.99      0.98      0.98       819
+weighted avg       0.98      0.98      0.98       819
 ```
 > *Release [v0.1.0](https://github.com/shanenoi/dashboard-mask-detector/releases/tag/v0.1.0)*
-***Kết Quả: 
+***Kết Quả: Tốc độ xử lý khác nhanh, mặc dù có delay nhưng có thể chấp nhận được, hầu hết các tác vụ nhận diện khuôn mặt đều được MobileNetV2 xử lý, còn lại chỉ còn việc nhận diện có đeo hay không là của model cần train***
