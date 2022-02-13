@@ -9,7 +9,9 @@ which were connected to server providing input.
 
 
 ### Usage
-> Use only one command `Linux`
-```sh
-make
-```
+- Linux & MacOS
+  ```sh
+  make
+  ```
+
+- Windows
