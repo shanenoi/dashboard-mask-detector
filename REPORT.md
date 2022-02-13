@@ -1,5 +1,5 @@
-# *I. Nhận Diện Đeo Khẩu Trang Và Các Hướng Giải Quyết*
-## 1. Sử dụng mạng YOLOv5 (Trung Nguyên)
+# 1. Nhận Diện Đeo Khẩu Trang Và Các Hướng Giải Quyết
+## A. Sử dụng mạng YOLOv5 (Trung Nguyên)
 ### * Phân Tích Vấn Đề Và Đưa Ra Giải Pháp
 > Các bước cần thực hiện là phân vùng khuông mặt đồng thời phân loại có đeo khẩu trang hay không. Như vậy, input là một bức ảnh(1 frame của video) output sẽ cho ra các bouding box chưa khuôn mặt và kèm theo label classified như có đeo khẩu trang hay không. Ta sẽ sử dụng mạng YOLOv5 áp dụng cho use case này.
 ### * YOLOv5 Là Gì, Nó Có Ăn Được Không?
@@ -71,7 +71,7 @@ mask_weared_incorrect         88         12      0.818      0.749      0.726    
 
 ***Kết Quả: sau các loại tối ưu siêu tham số, mô hình có độ chính xác cao nhưng không thích hợp cho vấn đề realtime vì weight của model khá nặng, thực hiện nhiều phép tính nên có độ delay khá cao trên một frame(đâu đó tầm 2-3s) nên không phù hợp cho trường hợp này.***
 
-## 2. Kết Hợp Mạng *Phân Loại Thông Thường* Với *Mạng MobileNetV2*
+## B. Kết Hợp Mạng *Phân Loại Thông Thường* Với *Mạng MobileNetV2*
 ### * Phân Tích Vấn Đề Và Đưa Ra Giải Pháp
 > Đối với trường hợp delay ở giải pháp trên thì ta rút ra được là trong quá trình chọn model, có một vài tham số chọn không được tối ưu và thực hiện quá nhiều phép tính cho các công đoạn tạo phân tách khuôn mặt và phân loại khuôn mặt trong một pipline, chúng em nghĩ đến việc tối ưu bằng các tích hợp mạng phân vùng khuôn mặt với mạng phân loại phân loại riêng.
 > Các tiêu chuẩn để chọn mạng có sẵn
@@ -145,3 +145,22 @@ weighted avg       0.98      0.98      0.98       819
 ```
 > *Release [v0.1.0](https://github.com/shanenoi/dashboard-mask-detector/releases/tag/v0.1.0)*
 ***Kết Quả: Tốc độ xử lý khác nhanh, mặc dù có delay nhưng có thể chấp nhận được, hầu hết các tác vụ nhận diện khuôn mặt đều được MobileNetV2 xử lý, còn lại chỉ còn việc nhận diện có đeo hay không là của model cần train***
+# 2. Xây Dựng Hệ Thống Backend(Serverside)
+## A. Máy chủ
+### Công Nghệ
+Trong các framework hỗ trợ lập trình Web, chúng em, quyết định chọn Django vì hẵn là framework giúp phát triển nhanh một kiến trúc MVC mà không tốn nhiều sức.
+### Nguyên lý hoạt động
+- Input là video sẽ lấy từ các camera kết nối vào máy chủ
+hệ thông sẽ phân tách video thành từng frame (frame được hiểu như là một bức ảnh)
+- các bức ảnh sẽ đi qua mô hình đã được train trước đó và trả về một bức hình có kết quả
+- máy chủ sẽ chuyển bức ảnh đó về dạng bytes và stream về client
+- một tính năng nữa là client có thể chọn được loại camera để theo dỏi
+ ## B. Kết nối mô hình được train máy chủ
+Chúng em sẽ triển khai một *interface* cho *adapter class* của mô hình đó với ý tưởng như sau:
+- Adapter class đó được kết thừa từ camera
+- function sẽ gồm có: 
+  - chỉ định cam mặc định
+  - lấy frame từ cam đó
+  - xử lý bức ảnh khi ta đã xác đinh được kết quả(như là: điền title object đã phát hiện được, ...)
+  - function adapt với model đã train trước đó, vói inp là ảnh, output là vị trí của khuôn mặt và có đeo khuẩu trang hay không.
+Việc triển khai **Adapter** như thế này sẽ giúp ta tiết kiệm được nhiều thời gian hơn khi ta thay thế bằng một kiến trúc của mô hình khác, áp dụng một trong các design pattern phổ biến để có thể theo dõi, sử chữa, và bảo trì dễ dàng hơn,
