@@ -20,3 +20,4 @@ def list_cam():
 LIST_CAMERAS = list(list_cam())
 FACE_NET = cv2.dnn.readNet(os.path.join("models", "deploy.prototxt"), os.path.join("models", "res10_300x300_ssd_iter_140000.caffemodel"))
 MASK_NET = load_model(os.path.join("models", "mask_detector.model"))
+RETRY = 5

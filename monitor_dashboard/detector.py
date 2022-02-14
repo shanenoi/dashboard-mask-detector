@@ -21,6 +21,8 @@ class Detector(VideoCamera):
 
     def detect_processing(self, image):
         (locs, preds) = self.detect_and_predict_mask(image)
+        if locs is None or preds is None:
+            return image
 
         for (box, pred) in zip(locs, preds):
             (startX, startY, endX, endY) = box
@@ -38,6 +40,9 @@ class Detector(VideoCamera):
 
 
     def detect_and_predict_mask(self, image):
+        if image is None:
+            return None, None
+
         (h, w) = image.shape[:2]
         blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), (104.0, 177.0, 123.0))
 
