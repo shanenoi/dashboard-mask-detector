@@ -15,3 +15,8 @@ which were connected to server providing input.
   ```
 
 - Windows
+
+### Working Assignment
+- Fontend & Backend Server: Thanh Danh
+- Pre-trained MobileNetV2: Thanh Danh & Trung Nguyên
+- YOLOv5: Trung Nguyên
