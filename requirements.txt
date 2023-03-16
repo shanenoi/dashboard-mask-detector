@@ -2,7 +2,7 @@ Django
 Markdown==3.3.6
 Pillow==9.0.0
 PyYAML==6.0
-Werkzeug==2.0.2
+Werkzeug==2.2.3
 absl-py==1.0.0
 cachetools==4.2.4
 certifi==2021.10.8
