@@ -1,6 +1,6 @@
 Django
 Markdown==3.3.6
-Pillow==9.0.0
+Pillow==9.3.0
 PyYAML==6.0
 Werkzeug==2.2.3
 absl-py==1.0.0
